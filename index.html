@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Obra Dinámica con Triángulos</title>
+  <style>
+    body {
+      margin: 0;
+      background: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    canvas {
+      background: white;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="obra" width="600" height="600"></canvas>
+
+  <script>
+    const canvas = document.getElementById('obra');
+    const ctx = canvas.getContext('2d');
+    const width = canvas.width;
+    const height = canvas.height;
+
+    function drawBackgroundTriangles() {
+      const triangles = [
+        [[0, 0], [200, 0], [100, 200]],
+        [[200, 0], [300, 150], [100, 200]],
+        [[300, 150], [500, 100], [600, 0]],
+        [[0, 600], [200, 500], [100, 300]],
+        [[200, 500], [400, 600], [100, 300]],
+        [[500, 600], [600, 400], [300, 500]],
+        [[600, 0], [600, 200], [400, 300]],
+        [[400, 300], [600, 400], [600, 200]],
+        [[100, 300], [300, 200], [250, 400]],
+        [[300, 200], [500, 100], [400, 300]],
+        [[300, 200], [250, 400], [400, 300]],
+      ];
+
+      triangles.forEach((points, i) => {
+        ctx.beginPath();
+        ctx.moveTo(...points[0]);
+        ctx.lineTo(...points[1]);
+        ctx.lineTo(...points[2]);
+        ctx.closePath();
+        ctx.fillStyle = i % 2 === 0 ? 'red' : 'white';
+        ctx.fill();
+      });
+    }
+
+    // Líneas negras a agregar con el tiempo
+    const lines = [
+      [[50, 100], [550, 500]],
+      [[100, 50], [400, 550]],
+      [[0, 300], [600, 300]],
+      [[300, 0], [300, 600]],
+      [[0, 0], [600, 600]],
+      [[600, 0], [0, 600]],
+    ];
+
+    let lineIndex = 0;
+
+    function drawNextLine() {
+      if (lineIndex < lines.length) {
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 18;
+        ctx.beginPath();
+        ctx.moveTo(...lines[lineIndex][0]);
+        ctx.lineTo(...lines[lineIndex][1]);
+        ctx.stroke();
+        lineIndex++;
+        setTimeout(drawNextLine, 800); // Tiempo entre líneas
+      }
+    }
+
+    // Iniciar
+    drawBackgroundTriangles();
+    setTimeout(drawNextLine, 1000);
+  </script>
+</body>
+</html>
